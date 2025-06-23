@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+@export var TileMapNode:TileMapLayer
+
 @export var PlayerIndex:int
 
 @export var Aceleration:float = 7.0
@@ -82,7 +84,7 @@ func _physics_process(delta) -> void:
 				direction = -1
 			
 			#Have you slowed down?
-			if (direction > 0 and velocity.x > 5) or (direction < 0 and velocity.x < 5):
+			if (direction > 0 and velocity.x > 5) or (direction < 0 and velocity.x < 5) or velocity.y > 300:
 				if abs(velocity.x) > 800.0:
 					print("STYLE POINTS")
 				
@@ -113,6 +115,8 @@ func _physics_process(delta) -> void:
 		if Input.is_action_pressed("Down"+"_"+str(PlayerIndex)) and is_on_floor():
 			velocity.x = lerpf(velocity.x, 0 , delta * 11)
 	
+	_lader_step()
+	
 	move_and_slide()
 	
 	
@@ -137,8 +141,6 @@ func _process(delta) -> void:
 	action(delta)
 	PrevieusAction = VisualNode.animation
 	
-	damage(delta)
-	
 	painting(delta)
 	
 	DebugLabelAnimation.text = VisualNode.animation
@@ -146,30 +148,13 @@ func _process(delta) -> void:
 func _Ghost_controle(delta) -> void:
 	$Ghost.global_position = lerp($Ghost.global_position,self.global_position+Vector2(2*velocity.x,-0.5*velocity.y),2*delta)
 
-func damage(delta) -> void:
-	BodyCollition.disabled = false
-	
-	var ListOfAttackAreas:Array = [JabArea,DownArea]
-	for i:Area2D in ListOfAttackAreas: 
-		i.get_child(0).disabled = true
-	
-	var ListOfCustomAreaActions:Array = ["At-Jab","Down"]
-	if not ListOfCustomAreaActions.has(PrevieusAction):
-		return
-	
-	if VisualNode.animation == "At-Jab" and VisualNode.frame == 1:
-		JabArea.get_child(0).disabled = false
-	if VisualNode.animation == "Down":
-		DownArea.get_child(0).disabled = false
-	
-	pass
-
 #Fighting/Doge shit
 var Cooldown:float
 var CurrentAttack:String
-#Cobmo jabs (Dont use this anymore. i hate this)
+#TODO Cobmo jabs (Dont use this anymore. i hate this)
 var JabCombo:int = 999
 
+#Visual
 func action(delta) -> void:
 	#At-Jab Combo
 	if Input.is_action_just_pressed("At-Jab"+"_"+str(PlayerIndex)) and VisualNode.animation == "At-Jab" and Cooldown > 0 and Cooldown < 4.2 and JabCombo < JabComboMax:
@@ -244,12 +229,59 @@ func SpawnPuff(ParticalType:PackedScene) -> void:
 	particale = null
 	return
 
-#Paintables
+#Laders
+var LadderAtlasList:Array = [
+	Vector2i(3, 0), #DEBUG LADER
+	]
 
+var TileMapCords_up   : Vector2i
+var TileMapCords_down : Vector2i
+func calculate_lader_varibles():
+	TileMapCords_up   = Vector2i(
+		round( ( $Lader_up.global_position + Vector2(-16,-16) ) /32 )
+		)
+	TileMapCords_down = Vector2i(
+		round( ( $Lader_down.global_position + Vector2(-16,-16) ) /32 )
+		)
+
+func _lader_step():
+	calculate_lader_varibles()
+	
+	#TODO FIX ATLES CORDS THAT MATCH LADDER IN A GENERAL SCRIPT
+	if LadderAtlasList.has(TileMapNode.get_cell_atlas_coords(TileMapCords_up)):
+		$"AnimatedSprite2D/Ladder Button".show()
+		if Input.is_action_just_pressed("interact"+"_"+str(PlayerIndex)):
+			$"AnimatedSprite2D/Ladder Button".hide()
+			_do_a_ladder(1)
+	
+	elif LadderAtlasList.has(TileMapNode.get_cell_atlas_coords(TileMapCords_down)):
+		$"AnimatedSprite2D/Ladder Button".show()
+		if Input.is_action_just_pressed("interact"+"_"+str(PlayerIndex)):
+			$"AnimatedSprite2D/Ladder Button".hide()
+			_do_a_ladder(-1)
+	
+	else:
+		$"AnimatedSprite2D/Ladder Button".hide()
+
+func _do_a_ladder(speed):
+	while true:
+		position.y -= speed * get_process_delta_time()
+		
+		calculate_lader_varibles()
+		
+		if speed > 0:
+			if not LadderAtlasList.has(TileMapNode.get_cell_atlas_coords(TileMapCords_up)) and not LadderAtlasList.has(TileMapNode.get_cell_atlas_coords(TileMapCords_down)):
+				break
+		else:
+			if not LadderAtlasList.has(TileMapNode.get_cell_atlas_coords(TileMapCords_down)):
+				break
+		
+
+#Paintables
 var current_paintable
 
 func painting(delta):
-	if current_paintable != null and Input.is_action_just_pressed("paint"+"_"+str(PlayerIndex)):
+	if current_paintable != null and Input.is_action_just_pressed("interact"+"_"+str(PlayerIndex)):
 		velocity = Vector2(0,0)
 		$Ghost.global_position = self.global_position
 		
