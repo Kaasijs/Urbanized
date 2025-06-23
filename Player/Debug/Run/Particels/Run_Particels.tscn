@@ -1,0 +1,85 @@
+[gd_scene load_steps=13 format=3 uid="uid://co8i8ppnyjymv"]
+
+[ext_resource type="Texture2D" uid="uid://lmjoal8vv500" path="res://Player/Debug/Run/Particels/Run_Dust_1-Sheet.png" id="1_at603"]
+[ext_resource type="Script" uid="uid://cugnh43q1nw48" path="res://Player/Debug/Particels.gd" id="2_gtchp"]
+[ext_resource type="Texture2D" uid="uid://ecculnoeldbw" path="res://Player/Debug/Run/Particels/Run_Dust_2-Sheet.png" id="2_ni72h"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m825t"]
+atlas = ExtResource("1_at603")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nob7j"]
+atlas = ExtResource("1_at603")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1kkpp"]
+atlas = ExtResource("1_at603")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jfqmh"]
+atlas = ExtResource("1_at603")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nrtb8"]
+atlas = ExtResource("2_ni72h")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0a5ci"]
+atlas = ExtResource("2_ni72h")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pitm5"]
+atlas = ExtResource("2_ni72h")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ovlqq"]
+atlas = ExtResource("2_ni72h")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_r4uhb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m825t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nob7j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1kkpp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jfqmh")
+}],
+"loop": false,
+"name": &"1",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nrtb8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0a5ci")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pitm5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ovlqq")
+}],
+"loop": true,
+"name": &"2",
+"speed": 10.0
+}]
+
+[node name="Run_Particels" type="AnimatedSprite2D"]
+top_level = true
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_r4uhb")
+animation = &"2"
+centered = false
+offset = Vector2(-10, 8)
+script = ExtResource("2_gtchp")
+
+[connection signal="animation_finished" from="." to="." method="_on_animation_finished"]

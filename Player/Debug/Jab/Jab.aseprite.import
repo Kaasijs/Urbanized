@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://ces17h2ao7mdq"
+path="res://.godot/imported/Jab.aseprite-2dc22f5c4eee8702c871882a9dc34490.res"
+
+[deps]
+
+source_file="res://Player/Debug/Jab/Jab.aseprite"
+dest_files=["res://.godot/imported/Jab.aseprite-2dc22f5c4eee8702c871882a9dc34490.res"]
+
+[params]
+

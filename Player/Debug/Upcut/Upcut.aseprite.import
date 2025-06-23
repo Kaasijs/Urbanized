@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://c2viltvvrp0s8"
+path="res://.godot/imported/Upcut.aseprite-9403362d38e119169a7925f33dc8a3bf.res"
+
+[deps]
+
+source_file="res://Player/Debug/Upcut/Upcut.aseprite"
+dest_files=["res://.godot/imported/Upcut.aseprite-9403362d38e119169a7925f33dc8a3bf.res"]
+
+[params]
+

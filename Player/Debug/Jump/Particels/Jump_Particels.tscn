@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://co8i8ppnyjymv"]
+
+[ext_resource type="SpriteFrames" uid="uid://bhvkfjquk283f" path="res://Player/Debug/Jump/Particels/Jump_Particels.tres" id="1_4vgry"]
+[ext_resource type="Script" uid="uid://cugnh43q1nw48" path="res://Player/Debug/Particels.gd" id="2_supbb"]
+
+[node name="Jump_Particels" type="AnimatedSprite2D"]
+top_level = true
+scale = Vector2(2, 2)
+sprite_frames = ExtResource("1_4vgry")
+animation = &"2"
+frame = 4
+frame_progress = 1.0
+centered = false
+offset = Vector2(-10, 8)
+script = ExtResource("2_supbb")
+
+[connection signal="animation_finished" from="." to="." method="_on_animation_finished"]

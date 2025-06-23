@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://cypwggpj3s7wp"
+path="res://.godot/imported/Jump_Dust_1.aseprite-d60dd78c5c923ccda598b651f051703b.res"
+
+[deps]
+
+source_file="res://Player/Debug/Jump/Particels/Jump_Dust_1.aseprite"
+dest_files=["res://.godot/imported/Jump_Dust_1.aseprite-d60dd78c5c923ccda598b651f051703b.res"]
+
+[params]
+

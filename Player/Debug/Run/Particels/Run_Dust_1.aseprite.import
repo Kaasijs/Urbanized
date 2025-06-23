@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://c4qmwed76fcyf"
+path="res://.godot/imported/Run_Dust_1.aseprite-abf3bc8831fb4fe7ab8dc48c122c7540.res"
+
+[deps]
+
+source_file="res://Player/Debug/Run/Particels/Run_Dust_1.aseprite"
+dest_files=["res://.godot/imported/Run_Dust_1.aseprite-abf3bc8831fb4fe7ab8dc48c122c7540.res"]
+
+[params]
+
