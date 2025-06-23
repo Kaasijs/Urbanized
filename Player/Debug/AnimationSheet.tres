@@ -1,8 +1,7 @@
-[gd_resource type="SpriteFrames" load_steps=43 format=3 uid="uid://bwynnusgv4ejo"]
+[gd_resource type="SpriteFrames" load_steps=36 format=3 uid="uid://bwynnusgv4ejo"]
 
 [ext_resource type="Texture2D" uid="uid://bk5xvra55vn2a" path="res://Player/Debug/Jab/Jab-Sheet.png" id="1_blfkv"]
 [ext_resource type="Texture2D" uid="uid://4mgf5pwpf8bb" path="res://Player/Debug/Idle/idle-Sheet.png" id="1_lkkxp"]
-[ext_resource type="Texture2D" uid="uid://c3lrqpfdjevw0" path="res://Player/Debug/Upcut/Upcut-Sheet.png" id="2_5xv1n"]
 [ext_resource type="Texture2D" uid="uid://dyjjv1kdd8rre" path="res://Player/Debug/Jump/jump-Sheet.png" id="2_geyfi"]
 [ext_resource type="Texture2D" uid="uid://43e77g60iqm4" path="res://Player/Debug/Down/Down-Sheet.png" id="3_3kbvl"]
 [ext_resource type="Texture2D" uid="uid://cxku6lxxt40ag" path="res://Player/Debug/Run/run-Sheet.png" id="3_rjiv4"]
@@ -34,30 +33,6 @@ region = Rect2(240, 0, 48, 48)
 [sub_resource type="AtlasTexture" id="AtlasTexture_t6sjc"]
 atlas = ExtResource("1_blfkv")
 region = Rect2(288, 0, 48, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ajjg7"]
-atlas = ExtResource("2_5xv1n")
-region = Rect2(0, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_84psm"]
-atlas = ExtResource("2_5xv1n")
-region = Rect2(64, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qjwg5"]
-atlas = ExtResource("2_5xv1n")
-region = Rect2(128, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_d6a8q"]
-atlas = ExtResource("2_5xv1n")
-region = Rect2(192, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_q8l33"]
-atlas = ExtResource("2_5xv1n")
-region = Rect2(256, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_lxsiq"]
-atlas = ExtResource("2_5xv1n")
-region = Rect2(320, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l74v0"]
 atlas = ExtResource("3_3kbvl")
@@ -177,29 +152,6 @@ animations = [{
 }],
 "loop": false,
 "name": &"At-Jab",
-"speed": 12.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ajjg7")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_84psm")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qjwg5")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_d6a8q")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_q8l33")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_lxsiq")
-}],
-"loop": false,
-"name": &"At-Upcut",
 "speed": 12.0
 }, {
 "frames": [{
