@@ -1,10 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://bormf2l1a3sls"]
+[gd_scene load_steps=9 format=3 uid="uid://bormf2l1a3sls"]
 
 [ext_resource type="Script" uid="uid://c76fcxiqowhga" path="res://Scripts/painter.gd" id="1_4enq4"]
 [ext_resource type="FontFile" uid="uid://o51rmvlqk40m" path="res://Fonts/Fibberish v1.0/fibberish.ttf" id="2_4enq4"]
-[ext_resource type="AudioStream" uid="uid://djuaq13sg10x0" path="res://Sound/Impact1.wav" id="2_xg1x2"]
-[ext_resource type="AudioStream" uid="uid://p2r0i62kk87p" path="res://Sound/SprayPaint(Spray).wav" id="3_uagup"]
-[ext_resource type="AudioStream" uid="uid://tsbdey1yoa8y" path="res://Sound/Text.wav" id="3_xg1x2"]
 
 [sub_resource type="Animation" id="Animation_6kube"]
 resource_name = "Open"
@@ -143,7 +140,7 @@ tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 0)]
+"values": [Color(1, 1, 1, 1)]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
@@ -258,21 +255,6 @@ tracks/6/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.117647)]
 }
-tracks/7/type = "audio"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("AudioStreamPlayer")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"clips": [{
-"end_offset": 0.0,
-"start_offset": 0.0,
-"stream": ExtResource("2_xg1x2")
-}],
-"times": PackedFloat32Array(0.15)
-}
-tracks/7/use_blend = true
 
 [sub_resource type="Animation" id="Animation_4enq4"]
 resource_name = "good"
@@ -349,25 +331,6 @@ tracks/5/keys = {
 "update": 0,
 "values": [Vector2(9.17, 9.17), Vector2(5, 5)]
 }
-tracks/6/type = "audio"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("AudioStreamPlayer")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"clips": [{
-"end_offset": 0.0,
-"start_offset": 0.0,
-"stream": ExtResource("3_uagup")
-}, {
-"end_offset": 0.0,
-"start_offset": 0.0,
-"stream": ExtResource("2_xg1x2")
-}],
-"times": PackedFloat32Array(0, 0.1625)
-}
-tracks/6/use_blend = true
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_1urqr"]
 _data = {
@@ -431,14 +394,11 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 7.0
-offset_bottom = -23.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
 [node name="Text" type="Label" parent="ColorRect"]
-self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 1
 anchors_preset = 8
@@ -456,12 +416,7 @@ rotation = -0.0174533
 scale = Vector2(4, 4)
 pivot_offset = Vector2(100, 7)
 size_flags_horizontal = 4
-text = "Here go's some text! :3"
+text = "Bad layers!"
 label_settings = SubResource("LabelSettings_xg1x2")
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-
-[node name="D" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("3_xg1x2")

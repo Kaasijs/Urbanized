@@ -52,7 +52,7 @@ func _physics_process(delta) -> void:
 		
 		if abs(direction) > 0.05:
 			#IF on a slope
-			if abs(SlopNormal) > 42 and abs(SlopNormal) < 47:
+			if IsOnSlop:
 				velocity.x = lerpf(velocity.x,direction * MaxSpeedSlope, delta * Aceleration)
 			else:
 				velocity.x = lerpf(velocity.x,direction * MaxSpeed, delta * Aceleration)
@@ -67,7 +67,7 @@ func _physics_process(delta) -> void:
 		if Input.is_action_just_pressed("Jump"+"_"+str(PlayerIndex)) and is_on_floor():
 			SpawnPuff(jump_particale)
 			velocity.y += Jumpheight
-			if abs(SlopNormal) > 42 and abs(SlopNormal) < 47 and SlopeMomentum < 0.01:
+			if IsOnSlop and SlopeMomentum < 0.01:
 				velocity.x -= (velocity.x*0.6) *direction
 	
 	# Add the gravity.
@@ -75,7 +75,7 @@ func _physics_process(delta) -> void:
 		velocity += get_gravity() * delta
 	
 	#Slope fix :) 
-	if abs(SlopNormal) > 42 and abs(SlopNormal) < 47:
+	if IsOnSlop:
 		if Input.is_action_pressed("Down"+"_"+str(PlayerIndex)):
 			
 			if SlopNormal > 0:
@@ -138,7 +138,6 @@ func _process(delta) -> void:
 	
 	pixel_perfect()
 	
-	action(delta)
 	PrevieusAction = VisualNode.animation
 	
 	painting(delta)
@@ -152,37 +151,8 @@ func _Ghost_controle(delta) -> void:
 var Cooldown:float
 var CurrentAttack:String
 #TODO Cobmo jabs (Dont use this anymore. i hate this)
-var JabCombo:int = 999
 
 #Visual
-func action(delta) -> void:
-	#At-Jab Combo
-	if Input.is_action_just_pressed("At-Jab"+"_"+str(PlayerIndex)) and VisualNode.animation == "At-Jab" and Cooldown > 0 and Cooldown < 4.2 and JabCombo < JabComboMax:
-		print(JabCombo)
-		velocity.x = direction * 150
-		JabCombo += 1
-		Cooldown = 5
-		VisualNode.stop()
-		VisualNode.play("At-Jab")
-		
-	#Cooldown logic
-	if Cooldown > 0:
-		Cooldown += -delta*8
-		DebugLabelCooldown.text = "Cooldown: " + str(Cooldown)
-		return
-	
-	#Jab Action
-	if Input.is_action_just_pressed("At-Jab"+"_"+str(PlayerIndex)):
-		print("New Jab")
-		velocity.x = direction * 200
-		JabCombo = 1
-		Cooldown = 5
-		VisualNode.play("At-Jab")
-	if Input.is_action_pressed("Down"+"_"+str(PlayerIndex)):
-		velocity.y += direction * 0.02 * delta
-		#Cooldown = 1.4
-		VisualNode.play("Down")
-
 func pixel_perfect() -> void:
 	VisualNode.global_position = round(global_position/2)*2
 	
@@ -280,15 +250,25 @@ func _do_a_ladder(speed):
 #Paintables
 var current_paintable
 
+var PainterGame = preload("res://Player/Painter/Painter.tscn")
+
 func painting(delta):
 	if current_paintable != null and Input.is_action_just_pressed("interact"+"_"+str(PlayerIndex)):
 		velocity = Vector2(0,0)
 		$Ghost.global_position = self.global_position
 		
+		$"AnimatedSprite2D/Paintable Button".hide()
 		
+		var InitPainterGame = PainterGame.instantiate()
+		InitPainterGame._start()
+		add_child(InitPainterGame)
 		
-		if current_paintable.has_method("_painted"):
-			current_paintable._painted()
+func _on_painterminigame_compleation():
+	if current_paintable.has_method("_painted"):
+		current_paintable._painted()
+
+func _on_painterminigame_failed():
+	pass
 
 func _entered_paintable(paintable:Area2D):
 	current_paintable = paintable
