@@ -285,6 +285,8 @@ func painting(delta):
 		velocity = Vector2(0,0)
 		$Ghost.global_position = self.global_position
 		
+		
+		
 		if current_paintable.has_method("_painted"):
 			current_paintable._painted()
 
