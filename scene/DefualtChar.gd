@@ -67,8 +67,8 @@ func _physics_process(delta) -> void:
 		if Input.is_action_just_pressed("Jump"+"_"+str(PlayerIndex)) and is_on_floor():
 			SpawnPuff(jump_particale)
 			velocity.y += Jumpheight
-			if IsOnSlop and SlopeMomentum < 0.01:
-				velocity.x -= (velocity.x*0.6) *direction
+			if IsOnSlop and SlopeMomentum < 0.1:
+				velocity.x -= (velocity.x*1.1) *direction
 	
 	# Add the gravity.
 	if not is_on_floor():
@@ -89,11 +89,17 @@ func _physics_process(delta) -> void:
 					print("STYLE POINTS")
 				
 				if SlopeMomentum == 0.0911:
-					velocity.y += abs(velocity.x)*1
-					velocity.x += abs(velocity.y)*direction * 1.1
+					SlopeMomentum += clamp(abs(velocity.y/660) ,0,9990.7)
+					
+					var prevelocity:Vector2 = velocity
+					
+					velocity.x += abs(prevelocity.y)*direction * 1.1
+					velocity.y += abs(prevelocity.x)*1
 				else:
-					velocity.x += ( SlopeInitVelocity + abs(velocity.x) *SlopeMomentum*0.1 )*direction
-					velocity.y += abs(velocity.x) + SlopeInitVelocity
+					var prevelocity:Vector2 = velocity
+					
+					velocity.x += ( SlopeInitVelocity + abs(prevelocity.x) *SlopeMomentum*0.1 )*direction
+					velocity.y += abs(prevelocity.x) + SlopeInitVelocity
 					pass
 				
 				SlopeMomentum = lerpf(SlopeMomentum, 0.4, delta*0.3)
@@ -253,28 +259,35 @@ var current_paintable
 var PainterGame = preload("res://Player/Painter/Painter.tscn")
 
 func painting(delta):
-	if current_paintable != null and Input.is_action_just_pressed("interact"+"_"+str(PlayerIndex)):
+	if current_paintable and Cooldown == 0:
+		$"AnimatedSprite2D/Paintable Button".show()
+	else:
+		$"AnimatedSprite2D/Paintable Button".hide()
+		
+	
+	if current_paintable != null and Input.is_action_just_pressed("interact"+"_"+str(PlayerIndex)) and Cooldown == 0:
 		velocity = Vector2(0,0)
 		$Ghost.global_position = self.global_position
 		
 		$"AnimatedSprite2D/Paintable Button".hide()
+		
+		Cooldown = 1
 		
 		var InitPainterGame = PainterGame.instantiate()
 		InitPainterGame._start()
 		add_child(InitPainterGame)
 		
 func _on_painterminigame_compleation():
+	Cooldown = 0
+	
 	if current_paintable.has_method("_painted"):
 		current_paintable._painted()
 
 func _on_painterminigame_failed():
-	pass
+	Cooldown = 0
 
 func _entered_paintable(paintable:Area2D):
 	current_paintable = paintable
-	$"AnimatedSprite2D/Paintable Button".show()
 
 func _exited_paintable():
 	current_paintable = null
-	$"AnimatedSprite2D/Paintable Button".hide()
-	pass

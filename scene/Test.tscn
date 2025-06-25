@@ -133,6 +133,7 @@ top_level = true
 scale = Vector2(2, 2)
 sprite_frames = ExtResource("3_ivqd0")
 animation = &"At-Jab"
+offset = Vector2(0, 1)
 
 [node name="Paintable Button" type="Sprite2D" parent="Player 1/AnimatedSprite2D"]
 visible = false

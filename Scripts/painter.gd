@@ -107,10 +107,10 @@ func escape_good():
 	index = -1
 	$ColorRect/Text.text = GreatTexts.pick_random()
 	
+	get_parent()._on_painterminigame_compleation()
+	
 	$AnimationPlayer.play("Good")
 	await $AnimationPlayer.animation_finished
-	
-	get_parent()._on_painterminigame_compleation()
 	
 	queue_free()
 
@@ -120,4 +120,7 @@ func escape_bad():
 	
 	$AnimationPlayer.play("Bad")
 	await $AnimationPlayer.animation_finished
+	
+	get_parent()._on_painterminigame_failed()
+	
 	queue_free()
