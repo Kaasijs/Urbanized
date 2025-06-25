@@ -100,8 +100,10 @@ texture = SubResource("GradientTexture2D_4j513")
 shape = SubResource("RectangleShape2D_b88cj")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+physics_interpolation_mode = 1
 position = Vector2(234, 216)
 zoom = Vector2(0.743119, 0.743119)
+process_callback = 0
 
 [node name="PhantomCameraHost" type="Node" parent="Camera2D"]
 process_priority = 300

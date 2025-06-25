@@ -34,6 +34,9 @@ func is_player() -> void:
 
 var SlopeMomentum:float
 var SlopeInitVelocity:float
+var initSlop:bool = false
+
+var previeus_velocity:Vector2 = Vector2.ZERO
 
 func _physics_process(delta) -> void:
 	#RESET FLOOR SNAP. SEE Slope fix for why
@@ -42,6 +45,20 @@ func _physics_process(delta) -> void:
 	#Get Slop normal angel
 	var SlopNormal = rad_to_deg(get_floor_normal().angle())+90
 	var IsOnSlop:bool = abs(SlopNormal) > 42 and abs(SlopNormal) < 47
+	
+	#Slop direction fix
+	if IsOnSlop:
+		if Input.is_action_pressed("Down"+"_"+str(PlayerIndex)):
+			
+			if SlopNormal > 0:
+				direction = 1
+				
+				if initSlop:
+					velocity.x = velocity.x * -1
+					previeus_velocity.x = previeus_velocity.x *-1
+				
+			else:
+				direction = -1
 	
 	#handle movement/deceleration.
 	if not Cooldown > 0:
@@ -74,32 +91,28 @@ func _physics_process(delta) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	
-	#Slope fix :) 
+	#Slope Handeling
 	if IsOnSlop:
 		if Input.is_action_pressed("Down"+"_"+str(PlayerIndex)):
-			
-			if SlopNormal > 0:
-				direction = 1
-			else:
-				direction = -1
-			
 			#Have you slowed down?
-			if (direction > 0 and velocity.x > 5) or (direction < 0 and velocity.x < 5) or velocity.y > 300:
+			if (direction > 0 and velocity.x > 10) or (direction < 0 and velocity.x < 10) or velocity.y > 300:
 				if abs(velocity.x) > 800.0:
 					print("STYLE POINTS")
 				
-				if SlopeMomentum == 0.0911:
-					SlopeMomentum += clamp(abs(velocity.y/660) ,0,9990.7)
+				if initSlop == false:
+					initSlop = true
 					
-					var prevelocity:Vector2 = velocity
+					velocity = previeus_velocity
 					
-					velocity.x += abs(prevelocity.y)*direction * 1.1
-					velocity.y += abs(prevelocity.x)*1
+					SlopeMomentum += abs(previeus_velocity.y/420) + abs(previeus_velocity.x/620)
+					print("init: " + str(SlopeMomentum))
+					
+					velocity.x += abs(previeus_velocity.y)*direction * 4
+					velocity.y += abs(previeus_velocity.y)*4
 				else:
-					var prevelocity:Vector2 = velocity
 					
-					velocity.x += ( SlopeInitVelocity + abs(prevelocity.x) *SlopeMomentum*0.1 )*direction
-					velocity.y += abs(prevelocity.x) + SlopeInitVelocity
+					velocity.x += ( SlopeInitVelocity + abs(previeus_velocity.x) *(1+SlopeMomentum)*0.023 )*direction
+					velocity.y += abs(previeus_velocity.x) + SlopeInitVelocity
 					pass
 				
 				SlopeMomentum = lerpf(SlopeMomentum, 0.4, delta*0.3)
@@ -115,6 +128,7 @@ func _physics_process(delta) -> void:
 					floor_snap_length = 9999
 					apply_floor_snap()
 			else:
+				initSlop = false
 				velocity.x = lerpf(velocity.x, 0 , delta * 11)
 	else:
 		SlopeMomentum = 0.0911
@@ -131,6 +145,8 @@ func _physics_process(delta) -> void:
 		VisualNode.scale.x = 2
 	elif direction < -0.1:
 		VisualNode.scale.x = -2
+		
+	previeus_velocity = velocity
 
 func _on_damage_dealt(DealtDamage:float,Agressor):
 	print(str(self) + "	" + str(DealtDamage) + "	Damage by	" + str(Agressor))
@@ -151,7 +167,7 @@ func _process(delta) -> void:
 	DebugLabelAnimation.text = VisualNode.animation
 
 func _Ghost_controle(delta) -> void:
-	$Ghost.global_position = lerp($Ghost.global_position,self.global_position+Vector2(2*velocity.x,-0.5*velocity.y),2*delta)
+	$Ghost.global_position = lerp($Ghost.global_position,self.global_position+Vector2(2*velocity.x,1.2*velocity.y),2*delta)
 
 #Fighting/Doge shit
 var Cooldown:float
