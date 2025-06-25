@@ -92,7 +92,7 @@ func _process(delta):
 					if Input.is_action_just_pressed(OtherInputs):
 						index = -1
 						
-						$D.pitch_scale = 0.
+						$D.pitch_scale = 0.3
 						$D.play()
 						
 						action.modulate = Color.RED

@@ -1,9 +1,16 @@
 extends Area2D
 
-func _painted():
-	self.queue_free()
-	return
+@onready var PaintedNode = $"../../../Painted"
 
+func _ready():
+	$"../Paint".hide()
+
+func _painted():
+	$"../Paint".show()
+	self.queue_free()
+
+func _process(delta):
+	$Canvas.offset.y = sin(Time.get_ticks_msec()/200)
 
 func _on_body_entered(body):
 	if body.has_method("is_player"):

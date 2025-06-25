@@ -37,6 +37,8 @@ var SlopeInitVelocity:float
 var initSlop:bool = false
 
 var previeus_velocity:Vector2 = Vector2.ZERO
+	
+#Player related stuff
 
 func _physics_process(delta) -> void:
 	#RESET FLOOR SNAP. SEE Slope fix for why
@@ -85,7 +87,7 @@ func _physics_process(delta) -> void:
 			SpawnPuff(jump_particale)
 			velocity.y += Jumpheight
 			if IsOnSlop and SlopeMomentum < 0.1:
-				velocity.x -= (velocity.x*1.1) *direction
+				velocity.x = 10 *-direction
 	
 	# Add the gravity.
 	if not is_on_floor():
