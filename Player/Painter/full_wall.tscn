@@ -10,12 +10,10 @@ size = Vector2(192, 128)
 [node name="FullWall" type="Node2D"]
 
 [node name="Paint" type="Sprite2D" parent="."]
-position = Vector2(0, 480)
 scale = Vector2(2, 2)
 texture = ExtResource("1_e2c5u")
 
 [node name="Wall" type="Area2D" parent="."]
-position = Vector2(0, 480)
 script = ExtResource("2_0b1e8")
 
 [node name="Canvas" type="Sprite2D" parent="Wall"]

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bk5xvra55vn2a"
-path="res://.godot/imported/Jab-Sheet.png-89b5e3eeb085432d43aeb8af4c72b6ea.ctex"
+uid="uid://ddpfu2s4n151n"
+path="res://.godot/imported/Player Slide 48x48.png-231f8b753150e56e9720be1cac54e05a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Player/Debug/Jab/Jab-Sheet.png"
-dest_files=["res://.godot/imported/Jab-Sheet.png-89b5e3eeb085432d43aeb8af4c72b6ea.ctex"]
+source_file="res://Player/Debug/Slide/Player Slide 48x48.png"
+dest_files=["res://.godot/imported/Player Slide 48x48.png-231f8b753150e56e9720be1cac54e05a.ctex"]
 
 [params]
 
@@ -31,4 +31,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

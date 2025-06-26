@@ -1,45 +1,54 @@
-extends RigidBody2D
+extends Node2D
 
 @export var PlayerNode:CharacterBody2D
-
-@onready var RaycastNode:RayCast2D = $RayCast2D
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
 var ArrayTagetSmell:Array = []
-var Index:int
+var ArrayTagetLooks:Array = []
+var ArrayTagetLooksf:Array = []
+var ArrayTagetLooksS:Array = []
+var ArrayTagetLooksR:Array = []
 
 var GoToTheFanashing:bool = false
 
 var TargetPreviuesPosition:Vector2
 
-func _physics_process(delta):
-	RaycastNode.global_position = global_position
-	RaycastNode.target_position = PlayerNode.global_position - RaycastNode.global_position
+var time:float
+func _process(delta):
+	time += delta
 	
-	if RaycastNode.get_collider() == PlayerNode:
-		ArrayTagetSmell = []
-		GoToTheFanashing= false
-		Index=0
-		
-		linear_velocity = Vector2(RaycastNode.target_position).normalized()*20 + Vector2(RaycastNode.target_position)/1.5
+	ArrayTagetSmell.append(PlayerNode.global_position)
+	ArrayTagetLooks.append(PlayerNode.VisualNode.animation)
+	ArrayTagetLooksf.append(PlayerNode.VisualNode.frame)
+	ArrayTagetLooksS.append(PlayerNode.VisualNode.speed_scale)
+	ArrayTagetLooksR.append(PlayerNode.VisualNode.scale)
 	
-	else:
-		if ArrayTagetSmell == []:
-			ArrayTagetSmell.append(TargetPreviuesPosition)
+	print(ArrayTagetLooks[0])
+	
+	var r = 280
+	
+	
+	if len(ArrayTagetSmell) > round(delta*r):
+		global_position = ArrayTagetSmell[0]
+		$AnimatedSprite2D.animation = ArrayTagetLooks[0]
+		$AnimatedSprite2D.frame
+		$AnimatedSprite2D.set_frame_and_progress(ArrayTagetLooksf[0],0)
+		$AnimatedSprite2D.speed_scale = ArrayTagetLooksS[0]
+		$AnimatedSprite2D.scale = ArrayTagetLooksR[0]
 		
-		if ArrayTagetSmell[len(ArrayTagetSmell)-1].distance_to(PlayerNode.global_position) > 20:
-			ArrayTagetSmell.append(TargetPreviuesPosition)
-		
-		var LastTargetDirection = Vector2(ArrayTagetSmell[0] - RaycastNode.global_position)
-		
-		if global_position.distance_to(ArrayTagetSmell[0]) < 80:
-			print(Index)
+		for i in range(len(ArrayTagetSmell)-r):
 			ArrayTagetSmell.remove_at(0)
-			
-		
-		if !GoToTheFanashing:
-			linear_velocity = LastTargetDirection * global_position.distance_to(PlayerNode.global_position)/200
+			ArrayTagetLooks.remove_at(0)
+			ArrayTagetLooksf.remove_at(0)
+			ArrayTagetLooksS.remove_at(0)
+			ArrayTagetLooksR.remove_at(0)
+
+
+func _on_area_2d_body_entered(body):
+	if len(ArrayTagetSmell) < 10:
+		return
 	
-	
-	TargetPreviuesPosition = PlayerNode.global_position
+	if body.has_method("is_player"):
+		get_tree().quit()
+		#body.Busted(self)

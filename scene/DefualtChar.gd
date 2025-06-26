@@ -7,6 +7,7 @@ extends CharacterBody2D
 @export var Aceleration:float = 7.0
 @export var MaxSpeed:float = 300.0
 @export var MaxSpeedSlope:float = 350.0
+@export var MaxSpeedLader:float = 300.0
 @export var Jumpheight:float = -400.0
 @export var JabComboMax:int = 3
 
@@ -37,105 +38,126 @@ var SlopeInitVelocity:float
 var initSlop:bool = false
 
 var previeus_velocity:Vector2 = Vector2.ZERO
-	
+var previeus_global_position:Vector2 = Vector2.ZERO
+
 #Player related stuff
 
 func _physics_process(delta) -> void:
-	#RESET FLOOR SNAP. SEE Slope fix for why
+	#RESET FLOOR SNAP. See slope fix for why
 	floor_snap_length = 15
 	
 	#Get Slop normal angel
 	var SlopNormal = rad_to_deg(get_floor_normal().angle())+90
 	var IsOnSlop:bool = abs(SlopNormal) > 42 and abs(SlopNormal) < 47
 	
-	#Slop direction fix
-	if IsOnSlop:
-		if Input.is_action_pressed("Down"+"_"+str(PlayerIndex)):
+	#Is sliding
+	if IsOnSlop and initSlop:#Input.is_action_pressed("Down"+"_"+str(PlayerIndex)):
+		if SlopNormal > 0 and direction < 0:
+			direction = 1
 			
-			if SlopNormal > 0:
-				direction = 1
-				
-				if initSlop:
-					velocity.x = velocity.x * -1
-					previeus_velocity.x = previeus_velocity.x *-1
-				
-			else:
-				direction = -1
+			if initSlop:
+				velocity.x = velocity.x * -1
+				previeus_velocity.x = previeus_velocity.x *-1
+			
+		if SlopNormal < 0 and direction > 0:
+			direction = -1
+			
+			if initSlop:
+				velocity.x = velocity.x * -1
+				previeus_velocity.x = previeus_velocity.x *-1
 	
-	#handle movement/deceleration.
-	if not Cooldown > 0:
-		if is_on_floor():
-			direction = lerp(direction, Input.get_axis("Left"+"_"+str(PlayerIndex), "Right"+"_"+str(PlayerIndex)), delta * 10)
-		else:
-			direction = lerp(direction, Input.get_axis("Left"+"_"+str(PlayerIndex), "Right"+"_"+str(PlayerIndex)), delta * 3)
-		
-		if abs(direction) > 0.05:
-			#IF on a slope
-			if IsOnSlop:
-				velocity.x = lerpf(velocity.x,direction * MaxSpeedSlope, delta * Aceleration)
+	#Not sliding
+	else:
+		#handle movement/deceleration.
+		if not Cooldown > 0:
+			if is_on_floor():
+				direction = lerp(direction, Input.get_axis("Left"+"_"+str(PlayerIndex), "Right"+"_"+str(PlayerIndex)), delta * 10)
 			else:
-				velocity.x = lerpf(velocity.x,direction * MaxSpeed, delta * Aceleration)
+				direction = lerp(direction, Input.get_axis("Left"+"_"+str(PlayerIndex), "Right"+"_"+str(PlayerIndex)), delta * 3)
+	
+	
+	#Acelleration and decelleration
+	if not Cooldown > 0:
+		#while sliding
+		if IsOnSlop and initSlop:
+			pass
+			
+		#while not sliding
 		else:
-			velocity.x = lerpf(velocity.x, 0 , delta * 11)
+			if abs(direction) > 0.05:
+				#IF on a slope
+				if IsOnSlop:
+					velocity.x = lerpf(velocity.x,direction * MaxSpeedSlope, delta * Aceleration)
+				else:
+					velocity.x = lerpf(velocity.x,direction * MaxSpeed, delta * Aceleration)
+			else:
+				velocity.x = lerpf(velocity.x, 0 , delta * 11)
+	
 	else:
 		if is_on_floor():
 			velocity.x = lerpf(velocity.x, 0 , delta * 11)
+	
 	
 	#Handle jumping
 	if not Cooldown > 0:
 		if Input.is_action_just_pressed("Jump"+"_"+str(PlayerIndex)) and is_on_floor():
 			SpawnPuff(jump_particale)
 			velocity.y += Jumpheight
-			if IsOnSlop and SlopeMomentum < 0.1:
+			if IsOnSlop and not initSlop:
 				velocity.x = 10 *-direction
 	
+	
 	# Add the gravity.
-	if not is_on_floor():
+	if not is_on_floor() and not Cooldown > 0:
 		velocity += get_gravity() * delta
+	
 	
 	#Slope Handeling
 	if IsOnSlop:
 		if Input.is_action_pressed("Down"+"_"+str(PlayerIndex)):
-			#Have you slowed down?
-			if (direction > 0 and velocity.x > 10) or (direction < 0 and velocity.x < 10) or velocity.y > 300:
-				if abs(velocity.x) > 800.0:
-					print("STYLE POINTS")
+			if SlopNormal > 0:
+				direction = 1
+			if SlopNormal < 0:
+				direction = -1
+			
+			var DefualtSlopeMinimumSpeed = (25 * direction)
+			var DefualtSpeedIncrease = 25
+			
+			#On first sliding frame
+			if initSlop == false:
+				initSlop = true
 				
-				if initSlop == false:
-					initSlop = true
-					
-					velocity = previeus_velocity
-					
-					SlopeMomentum += abs(previeus_velocity.y/420) + abs(previeus_velocity.x/620)
-					print("init: " + str(SlopeMomentum))
-					
-					velocity.x += abs(previeus_velocity.y)*direction * 4
-					velocity.y += abs(previeus_velocity.y)*4
-				else:
-					
-					velocity.x += ( SlopeInitVelocity + abs(previeus_velocity.x) *(1+SlopeMomentum)*0.023 )*direction
-					velocity.y += abs(previeus_velocity.x) + SlopeInitVelocity
-					pass
+				print(previeus_velocity)
 				
-				SlopeMomentum = lerpf(SlopeMomentum, 0.4, delta*0.3)
-				SlopeInitVelocity = lerpf(SlopeInitVelocity,0.0,delta*14)
-				print(SlopeMomentum)
-				
-				if Input.is_action_just_pressed("Jump"+"_"+str(PlayerIndex)):
-					print("s:" + str(velocity.x))
-					velocity.y += (abs(1+velocity.x)*(1+SlopeMomentum))/1.2 *-1
-					velocity.x += (abs(1+velocity.x)*(1+SlopeMomentum))/3 * direction
-					
-				else:
-					floor_snap_length = 9999
-					apply_floor_snap()
+				velocity.x += (abs(previeus_velocity.y+10) * direction * 0.5) + (previeus_velocity.x/6) + DefualtSlopeMinimumSpeed
+				velocity.x *= 0.87
+				velocity.y += abs(previeus_velocity.y)*2
+		
+			#On other slding frams
 			else:
+				velocity.x = lerp(velocity.x,clamp(abs(velocity.x)*direction + (DefualtSpeedIncrease/abs(velocity.x/100) * direction),-520,520) + DefualtSlopeMinimumSpeed, delta*3)
+				print(velocity.x)
+			
+			velocity.x += Input.get_axis("Left"+"_"+str(PlayerIndex), "Right"+"_"+str(PlayerIndex)) + MaxSpeedSlope/4 * direction * delta
+			
+			
+			if Input.is_action_just_pressed("Jump"+"_"+str(PlayerIndex)):
 				initSlop = false
+				print("s:" + str(velocity.x))
+				var Relative = velocity
+				velocity.y += ((abs(Relative.x)*-1)+Relative.y)/6
+				velocity.x += (abs((Relative.x+Relative.y)/3) *direction )/1.1
+				
+			else:
+				floor_snap_length = 9999
+				apply_floor_snap()
+		else:
+			if abs(velocity.x) < 100:
+				initSlop = false
+			if initSlop == true:
 				velocity.x = lerpf(velocity.x, 0 , delta * 11)
 	else:
-		SlopeMomentum = 0.0911
-		if Input.is_action_pressed("Down"+"_"+str(PlayerIndex)) and is_on_floor():
-			velocity.x = lerpf(velocity.x, 0 , delta * 11)
+		initSlop = false
 	
 	_lader_step()
 	
@@ -147,8 +169,10 @@ func _physics_process(delta) -> void:
 		VisualNode.scale.x = 2
 	elif direction < -0.1:
 		VisualNode.scale.x = -2
-		
-	previeus_velocity = velocity
+	
+	if !is_on_floor():
+		previeus_velocity = velocity
+	previeus_global_position = global_position
 
 func _on_damage_dealt(DealtDamage:float,Agressor):
 	print(str(self) + "	" + str(DealtDamage) + "	Damage by	" + str(Agressor))
@@ -181,9 +205,22 @@ func pixel_perfect() -> void:
 	VisualNode.global_position = round(global_position/2)*2
 	
 func animate(delta) -> void:
+	#Ladder
+	if $BodyCollition.disabled:
+		VisualNode.play("Ladder")
+		VisualNode.speed_scale = clamp(abs(velocity.y)/170,0,6)
+		return
+	
+	#CooldownStopAnimation
 	if Cooldown > 0:
+		VisualNode.play("Idle")
 		return
 	VisualNode.speed_scale = 1
+	
+	#Slope
+	if initSlop:
+		VisualNode.animation = "Slide"
+		return
 	
 	#Jumping
 	if velocity.y > 0.1:
@@ -224,10 +261,6 @@ func SpawnPuff(ParticalType:PackedScene) -> void:
 	return
 
 #Laders
-var LadderAtlasList:Array = [
-	Vector2i(3, 0), #DEBUG LADER
-	]
-
 var TileMapCords_up   : Vector2i
 var TileMapCords_down : Vector2i
 func calculate_lader_varibles():
@@ -238,38 +271,81 @@ func calculate_lader_varibles():
 		round( ( $Lader_down.global_position + Vector2(-16,-16) ) /32 )
 		)
 
+var Lock_Direction:int = 0
+
 func _lader_step():
 	calculate_lader_varibles()
 	
 	#TODO FIX ATLES CORDS THAT MATCH LADDER IN A GENERAL SCRIPT
-	if LadderAtlasList.has(TileMapNode.get_cell_atlas_coords(TileMapCords_up)):
-		$"AnimatedSprite2D/Ladder Button".show()
-		if Input.is_action_just_pressed("interact"+"_"+str(PlayerIndex)):
-			$"AnimatedSprite2D/Ladder Button".hide()
-			_do_a_ladder(1)
+	if Public.AtlasListLadders.has(TileMapNode.get_cell_atlas_coords(TileMapCords_up)):
+		if !Public.AtlasListLadders.has(TileMapNode.get_cell_atlas_coords(TileMapCords_down)) and not Input.is_action_pressed("Jump"+"_"+str(PlayerIndex)):
+			$BodyCollition.disabled = false
+			if Cooldown == 2:
+				Cooldown = 0
+				return
+		
+		#Check if init
+		if Cooldown != 2:
+			if direction > 0:
+				Lock_Direction = 1
+			else:
+				Lock_Direction = -1
+		
+		_do_a_ladder()
 	
-	elif LadderAtlasList.has(TileMapNode.get_cell_atlas_coords(TileMapCords_down)):
-		$"AnimatedSprite2D/Ladder Button".show()
-		if Input.is_action_just_pressed("interact"+"_"+str(PlayerIndex)):
-			$"AnimatedSprite2D/Ladder Button".hide()
-			_do_a_ladder(-1)
+	elif Public.AtlasListLadders.has(TileMapNode.get_cell_atlas_coords(TileMapCords_down)):
+		if Input.is_action_pressed("Down"+"_"+str(PlayerIndex)) or Cooldown == 2:
+			#Check if init
+			if Cooldown != 2:
+				if direction > 0:
+					Lock_Direction = 1
+				else:
+					Lock_Direction = -1
+			
+			_do_a_ladder()
 	
 	else:
-		$"AnimatedSprite2D/Ladder Button".hide()
+		$BodyCollition.disabled = false
+		if Cooldown == 2:
+			Cooldown = 0
 
-func _do_a_ladder(speed):
-	while true:
-		position.y -= speed * get_process_delta_time()
-		
-		calculate_lader_varibles()
-		
-		if speed > 0:
-			if not LadderAtlasList.has(TileMapNode.get_cell_atlas_coords(TileMapCords_up)) and not LadderAtlasList.has(TileMapNode.get_cell_atlas_coords(TileMapCords_down)):
-				break
-		else:
-			if not LadderAtlasList.has(TileMapNode.get_cell_atlas_coords(TileMapCords_down)):
-				break
-		
+func _do_a_ladder():
+	if is_on_floor() and not Input.is_action_pressed("Down"+"_"+str(PlayerIndex)):
+		if Input.is_action_pressed("Jump"+"_"+str(PlayerIndex)):
+			velocity.y += -10
+		elif Cooldown == 2:
+			Cooldown = 0
+		$BodyCollition.disabled = false
+		return
+	
+	$BodyCollition.disabled = true
+	Cooldown = 2
+	
+	direction = Input.get_axis("Left"+"_"+str(PlayerIndex),"Right"+"_"+str(PlayerIndex))
+	var direction_y = Input.get_axis("Jump"+"_"+str(PlayerIndex),"Down"+"_"+str(PlayerIndex))
+	
+	velocity.x = lerpf(velocity.x,(direction * MaxSpeedLader)/2, get_process_delta_time() * 24)
+	
+	if !Public.AtlasListLadders.has(TileMapNode.get_cell_atlas_coords(round(global_position)/32)) or !Public.AtlasListLadders.has(TileMapNode.get_cell_atlas_coords(TileMapCords_up)):
+		velocity.x = 0
+		global_position.x = lerpf(global_position.x,round(previeus_global_position.x/32)*32+16*Lock_Direction, get_process_delta_time() * 18)
+	
+	velocity.y = lerpf(velocity.y,(direction_y * MaxSpeedLader), get_process_delta_time() * 12)
+	
+	return
+	
+	#while true:
+		#position.y -= speed * get_process_delta_time()
+		#
+		#calculate_lader_varibles()
+		#
+		#if speed > 0:
+			#if not Public.AtlasListLadders.has(TileMapNode.get_cell_atlas_coords(TileMapCords_up)) and not Public.AtlasListLadders.has(TileMapNode.get_cell_atlas_coords(TileMapCords_down)):
+				#break
+		#else:
+			#if not Public.AtlasListLadders.has(TileMapNode.get_cell_atlas_coords(TileMapCords_down)):
+				#break
+	
 
 #Paintables
 var current_paintable
@@ -277,13 +353,13 @@ var current_paintable
 var PainterGame = preload("res://Player/Painter/Painter.tscn")
 
 func painting(delta):
-	if current_paintable and Cooldown == 0:
+	if current_paintable and not Cooldown > 0:
 		$"AnimatedSprite2D/Paintable Button".show()
 	else:
 		$"AnimatedSprite2D/Paintable Button".hide()
 		
 	
-	if current_paintable != null and Input.is_action_just_pressed("interact"+"_"+str(PlayerIndex)) and Cooldown == 0:
+	if current_paintable != null and Input.is_action_just_pressed("interact"+"_"+str(PlayerIndex)) and not Cooldown > 0:
 		velocity = Vector2(0,0)
 		$Ghost.global_position = self.global_position
 		

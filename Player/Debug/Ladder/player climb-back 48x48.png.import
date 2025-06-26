@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://43e77g60iqm4"
-path="res://.godot/imported/Down-Sheet.png-848f0cc45ddfe85ef92c296a4324098f.ctex"
+uid="uid://ck1svsad1fk80"
+path="res://.godot/imported/player climb-back 48x48.png-2b36b64873372db1104f822f44f60ac7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Player/Debug/Down/Down-Sheet.png"
-dest_files=["res://.godot/imported/Down-Sheet.png-848f0cc45ddfe85ef92c296a4324098f.ctex"]
+source_file="res://Player/Debug/Ladder/player climb-back 48x48.png"
+dest_files=["res://.godot/imported/player climb-back 48x48.png-2b36b64873372db1104f822f44f60ac7.ctex"]
 
 [params]
 
@@ -31,4 +31,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0
