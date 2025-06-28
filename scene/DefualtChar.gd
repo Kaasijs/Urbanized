@@ -32,6 +32,9 @@ var direction:float
 func is_player() -> void:
 	return
 
+func _ready():
+	Public.CurrentPlayer = self
+
 
 var SlopeMomentum:float
 var SlopeInitVelocity:float
@@ -127,26 +130,32 @@ func _physics_process(delta) -> void:
 			if initSlop == false:
 				initSlop = true
 				
+				print("Init slope")
 				print(previeus_velocity)
 				
 				velocity.x += (abs(previeus_velocity.y+10) * direction * 0.5) + (previeus_velocity.x/6) + DefualtSlopeMinimumSpeed
 				velocity.x *= 0.87
+				velocity.x *= 0.8 + abs(Input.get_axis("Left"+"_"+str(PlayerIndex), "Right"+"_"+str(PlayerIndex)))*0.25
 				velocity.y += abs(previeus_velocity.y)*2
 		
 			#On other slding frams
 			else:
 				velocity.x = lerp(velocity.x,clamp(abs(velocity.x)*direction + (DefualtSpeedIncrease/abs(velocity.x/100) * direction),-520,520) + DefualtSlopeMinimumSpeed, delta*3)
-				print(velocity.x)
+				
 			
-			velocity.x += Input.get_axis("Left"+"_"+str(PlayerIndex), "Right"+"_"+str(PlayerIndex)) + MaxSpeedSlope/4 * direction * delta
+			velocity.x += abs(Input.get_axis("Left"+"_"+str(PlayerIndex), "Right"+"_"+str(PlayerIndex))) + MaxSpeedSlope/6 * direction * delta
 			
+			
+			#StylePoints
+			if abs(velocity.x) > 500 and time_reset_forward_to_pychics_process:
+				Public.AddScore(10,global_position)
 			
 			if Input.is_action_just_pressed("Jump"+"_"+str(PlayerIndex)):
 				initSlop = false
 				print("s:" + str(velocity.x))
 				var Relative = velocity
-				velocity.y += ((abs(Relative.x)*-1)+Relative.y)/6
-				velocity.x += (abs((Relative.x+Relative.y)/3) *direction )/1.1
+				velocity.y += ((abs(Relative.x)*-1)+Relative.y)/6.3
+				velocity.x += (abs((Relative.x+Relative.y)/3) *direction )/1.4
 				
 			else:
 				floor_snap_length = 9999
@@ -173,11 +182,20 @@ func _physics_process(delta) -> void:
 	if !is_on_floor():
 		previeus_velocity = velocity
 	previeus_global_position = global_position
+	
+	time_reset_forward_to_pychics_process = false
 
 func _on_damage_dealt(DealtDamage:float,Agressor):
 	print(str(self) + "	" + str(DealtDamage) + "	Damage by	" + str(Agressor))
 
+var time:float = 0
+var time_reset_forward_to_pychics_process: bool = false
 func _process(delta) -> void:
+	if time >= 0.1:
+		time_reset_forward_to_pychics_process = true
+		time = 0
+	time += delta
+	
 	_Ghost_controle(delta) #This is for the camera so it knows how much to zoom
 	
 	animate(delta)
@@ -373,6 +391,10 @@ func painting(delta):
 		
 func _on_painterminigame_compleation():
 	Cooldown = 0
+	
+	if current_paintable == null:
+		printerr("Wauw this is fuckup. current_paintable == null")
+		return
 	
 	if current_paintable.has_method("_painted"):
 		current_paintable._painted()

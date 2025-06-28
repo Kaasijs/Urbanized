@@ -1,11 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://c5vvkw1dyj46o"]
+[gd_scene load_steps=3 format=3 uid="uid://c5vvkw1dyj46o"]
 
 [ext_resource type="Texture2D" uid="uid://c14ejr7r6p07a" path="res://Player/Painter/WallArt.png" id="1_e2c5u"]
-[ext_resource type="Script" uid="uid://6a5mc3bot3m1" path="res://Scripts/wallpaintable.gd" id="2_0b1e8"]
-[ext_resource type="Texture2D" uid="uid://5x18tf2i62y4" path="res://Player/Painter/Textures/canvas.png" id="3_f7yu6"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_b88cj"]
-size = Vector2(192, 128)
+[ext_resource type="PackedScene" uid="uid://bh6yolpvoup20" path="res://Player/Painter/Part_wall.tscn" id="2_13ryu"]
 
 [node name="FullWall" type="Node2D"]
 
@@ -13,15 +9,4 @@ size = Vector2(192, 128)
 scale = Vector2(2, 2)
 texture = ExtResource("1_e2c5u")
 
-[node name="Wall" type="Area2D" parent="."]
-script = ExtResource("2_0b1e8")
-
-[node name="Canvas" type="Sprite2D" parent="Wall"]
-scale = Vector2(2, 2)
-texture = ExtResource("3_f7yu6")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall"]
-shape = SubResource("RectangleShape2D_b88cj")
-
-[connection signal="body_entered" from="Wall" to="Wall" method="_on_body_entered"]
-[connection signal="body_exited" from="Wall" to="Wall" method="_on_body_exited"]
+[node name="Wall" parent="." instance=ExtResource("2_13ryu")]

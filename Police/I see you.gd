@@ -15,6 +15,7 @@ var GoToTheFanashing:bool = false
 var TargetPreviuesPosition:Vector2
 
 var time:float
+
 func _process(delta):
 	time += delta
 	
@@ -24,20 +25,31 @@ func _process(delta):
 	ArrayTagetLooksS.append(PlayerNode.VisualNode.speed_scale)
 	ArrayTagetLooksR.append(PlayerNode.VisualNode.scale)
 	
-	print(ArrayTagetLooks[0])
+	#print(ArrayTagetLooks[0])
 	
-	var r = 280
+	var r = 3
+	
+	#print(round(r/delta))
 	
 	
-	if len(ArrayTagetSmell) > round(delta*r):
-		global_position = ArrayTagetSmell[0]
+	if len(ArrayTagetSmell) > round(r/delta):
+		var DirectionNext:Vector2 = global_position - ArrayTagetSmell[0]
+		var DirectionPlayer:Vector2 = global_position - PlayerNode.global_position
+		
+		#print(
+			#str(DirectionNext) +
+			#str(DirectionPlayer)
+			#)
+		
+		
+		global_position = lerp(global_position,ArrayTagetSmell[0],clamp(delta*20,0,1))
 		$AnimatedSprite2D.animation = ArrayTagetLooks[0]
 		$AnimatedSprite2D.frame
 		$AnimatedSprite2D.set_frame_and_progress(ArrayTagetLooksf[0],0)
 		$AnimatedSprite2D.speed_scale = ArrayTagetLooksS[0]
 		$AnimatedSprite2D.scale = ArrayTagetLooksR[0]
 		
-		for i in range(len(ArrayTagetSmell)-r):
+		for i in range(len(ArrayTagetSmell)-round(r/delta)):
 			ArrayTagetSmell.remove_at(0)
 			ArrayTagetLooks.remove_at(0)
 			ArrayTagetLooksf.remove_at(0)
@@ -50,5 +62,7 @@ func _on_area_2d_body_entered(body):
 		return
 	
 	if body.has_method("is_player"):
-		get_tree().quit()
+		#get_tree().quit()
 		#body.Busted(self)
+		
+		pass

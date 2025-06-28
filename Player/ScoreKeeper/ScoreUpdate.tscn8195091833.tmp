@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://btncg12phqkyf"]
+
+[ext_resource type="Script" uid="uid://c4uxjxn5jjbuq" path="res://Player/ScoreKeeper/score_update.gd" id="1_kvseg"]
+[ext_resource type="FontFile" uid="uid://o51rmvlqk40m" path="res://Fonts/Fibberish v1.0/fibberish.ttf" id="2_pqc06"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_81poy"]
+font = ExtResource("2_pqc06")
+font_size = 64
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.898039)
+shadow_offset = Vector2(4, 4)
+
+[sub_resource type="Animation" id="Animation_6pjvs"]
+resource_name = "Start"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_81poy"]
+_data = {
+&"1": SubResource("Animation_6pjvs")
+}
+
+[node name="ScoreUpdate" type="Node2D"]
+script = ExtResource("1_kvseg")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "10"
+label_settings = SubResource("LabelSettings_81poy")
+horizontal_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_81poy")
+}

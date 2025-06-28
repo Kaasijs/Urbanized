@@ -45,7 +45,6 @@ var GreatTexts:Array =[
 
 func _start():
 	index = 0
-	print(InputMap.get_actions())
 	
 	for i in amount:
 		_add_action()
