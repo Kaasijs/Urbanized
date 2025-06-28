@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://ci7n8fk24ttfi"]
+
+[ext_resource type="Script" uid="uid://cjlb114ih1kbo" path="res://scene/Map 1/escape.gd" id="3_wksis"]
+[ext_resource type="Texture2D" uid="uid://5x18tf2i62y4" path="res://Player/Painter/Textures/canvas.png" id="4_wksis"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b88cj"]
+size = Vector2(192, 128)
+
+[node name="FullWall" type="Node2D"]
+
+[node name="Wall" type="Area2D" parent="."]
+script = ExtResource("3_wksis")
+
+[node name="Canvas" type="Sprite2D" parent="Wall"]
+visible = false
+modulate = Color(0, 0.639843, 0.344839, 1)
+scale = Vector2(2, 2)
+texture = ExtResource("4_wksis")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall"]
+shape = SubResource("RectangleShape2D_b88cj")
+
+[connection signal="body_entered" from="Wall" to="Wall" method="_on_body_entered"]
+[connection signal="body_exited" from="Wall" to="Wall" method="_on_body_exited"]

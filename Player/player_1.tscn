@@ -1,0 +1,63 @@
+[gd_scene load_steps=8 format=3 uid="uid://bfuthgyh3gc3l"]
+
+[ext_resource type="Script" uid="uid://cfr8k7yoafpur" path="res://scene/DefualtChar.gd" id="1_22iwe"]
+[ext_resource type="SpriteFrames" uid="uid://bwynnusgv4ejo" path="res://Player/Debug/AnimationSheet.tres" id="2_qsxbd"]
+[ext_resource type="Texture2D" uid="uid://btocdd2v2sda8" path="res://Player/Painter/Textures/icon.png" id="3_exars"]
+[ext_resource type="Texture2D" uid="uid://cfpq4o7v1hjph" path="res://Player/Painter/Textures/up.png" id="4_vq3t0"]
+
+[sub_resource type="Gradient" id="Gradient_4j513"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_b88cj"]
+gradient = SubResource("Gradient_4j513")
+width = 16
+height = 16
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ajfg5"]
+height = 29.0
+
+[node name="Player 1" type="CharacterBody2D" node_paths=PackedStringArray("BodyCollition")]
+scale = Vector2(2, 2)
+floor_constant_speed = true
+floor_block_on_wall = false
+floor_max_angle = 1.0472
+script = ExtResource("1_22iwe")
+Aceleration = 2.0
+MaxSpeedSlope = 340.0
+MaxSpeedLader = 200.0
+BodyCollition = NodePath("BodyCollition")
+
+[node name="Lader_up" type="Marker2D" parent="."]
+position = Vector2(0, -13)
+
+[node name="Lader_down" type="Marker2D" parent="."]
+position = Vector2(0, 36)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+top_level = true
+scale = Vector2(2, 2)
+sprite_frames = ExtResource("2_qsxbd")
+animation = &"Idle"
+offset = Vector2(0, 1)
+
+[node name="Paintable Button" type="Sprite2D" parent="AnimatedSprite2D"]
+visible = false
+position = Vector2(-4, -24)
+texture = ExtResource("3_exars")
+
+[node name="Ladder Button" type="Sprite2D" parent="AnimatedSprite2D"]
+visible = false
+position = Vector2(-4, -24)
+texture = ExtResource("4_vq3t0")
+
+[node name="escape Button" type="Sprite2D" parent="AnimatedSprite2D"]
+visible = false
+position = Vector2(-4, -24)
+texture = SubResource("GradientTexture2D_b88cj")
+
+[node name="BodyCollition" type="CollisionShape2D" parent="."]
+position = Vector2(0, 3)
+shape = SubResource("CapsuleShape2D_ajfg5")
+one_way_collision_margin = 0.0
+
+[node name="Ghost" type="Node2D" parent="."]
+top_level = true

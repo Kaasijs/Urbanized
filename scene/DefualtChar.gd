@@ -107,7 +107,8 @@ func _physics_process(delta) -> void:
 			SpawnPuff(jump_particale)
 			velocity.y += Jumpheight
 			if IsOnSlop and not initSlop:
-				velocity.x = 10 *-direction
+				if round(SlopNormal/abs(SlopNormal)) != direction:
+					velocity.x = 20 *-SlopNormal/-45
 	
 	
 	# Add the gravity.
@@ -207,6 +208,7 @@ func _process(delta) -> void:
 	PrevieusAction = VisualNode.animation
 	
 	painting(delta)
+	_escape()
 	
 	DebugLabelAnimation.text = VisualNode.animation
 
@@ -407,3 +409,21 @@ func _entered_paintable(paintable:Area2D):
 
 func _exited_paintable():
 	current_paintable = null
+
+#Escape
+var escaping = false
+func _escape():
+	if escaping:
+		$"AnimatedSprite2D/escape Button".show()
+	else:
+		$"AnimatedSprite2D/escape Button".hide()
+	
+	if Input.is_action_just_pressed("interact"+"_"+str(PlayerIndex)):
+		pass
+
+func _entered_escape():
+	escaping = true
+
+func _exited_escape():
+	escaping = false
+	
