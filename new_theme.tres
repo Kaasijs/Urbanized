@@ -3,5 +3,8 @@
 [ext_resource type="FontFile" uid="uid://o51rmvlqk40m" path="res://Fonts/Fibberish v1.0/fibberish.ttf" id="1_amlv4"]
 
 [resource]
-default_font_size = 80
+default_font_size = 32
+Button/font_sizes/font_size = 64
 Button/fonts/font = ExtResource("1_amlv4")
+RichTextLabel/fonts/mono_font = ExtResource("1_amlv4")
+RichTextLabel/fonts/normal_font = ExtResource("1_amlv4")

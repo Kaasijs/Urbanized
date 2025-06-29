@@ -25,10 +25,6 @@ var PrevieusAction:String
 #General Input values/varibles
 var direction:float
 
-#Debug
-@onready var DebugLabelCooldown = $"../CanvasLayer/Cooldown"
-@onready var DebugLabelAnimation = $"../CanvasLayer/Animation"
-
 func is_player() -> void:
 	return
 
@@ -210,7 +206,7 @@ func _process(delta) -> void:
 	painting(delta)
 	_escape()
 	
-	DebugLabelAnimation.text = VisualNode.animation
+	#DebugLabelAnimation.text = VisualNode.animation
 
 func _Ghost_controle(delta) -> void:
 	$Ghost.global_position = lerp($Ghost.global_position,self.global_position+Vector2(2*velocity.x,1.2*velocity.y),2*delta)
@@ -226,10 +222,11 @@ func pixel_perfect() -> void:
 	
 func animate(delta) -> void:
 	#Ladder
-	if $BodyCollition.disabled:
-		VisualNode.play("Ladder")
-		VisualNode.speed_scale = clamp(abs(velocity.y)/170,0,6)
-		return
+	if has_node("BodyCollition"):
+		if $BodyCollition.disabled:
+			VisualNode.play("Ladder")
+			VisualNode.speed_scale = clamp(abs(velocity.y)/170,0,6)
+			return
 	
 	#CooldownStopAnimation
 	if Cooldown > 0:
@@ -325,7 +322,8 @@ func _lader_step():
 			_do_a_ladder()
 	
 	else:
-		$BodyCollition.disabled = false
+		if has_node("BodyCollition"):
+			$BodyCollition.disabled = false
 		if Cooldown == 2:
 			Cooldown = 0
 
@@ -415,11 +413,18 @@ var escaping = false
 func _escape():
 	if escaping:
 		$"AnimatedSprite2D/escape Button".show()
+	
+		if Input.is_action_just_pressed("interact"+"_"+str(PlayerIndex)):
+			BodyCollition.queue_free()
+			$"../Transition".get_child(0).play("Close")
+			await $"../Transition".get_child(0).animation_finished
+			await get_tree().create_timer(0.5).timeout
+			get_tree().change_scene_to_file("res://scene/Shop/Shop.tscn")
+		
 	else:
 		$"AnimatedSprite2D/escape Button".hide()
 	
-	if Input.is_action_just_pressed("interact"+"_"+str(PlayerIndex)):
-		pass
+	
 
 func _entered_escape():
 	escaping = true

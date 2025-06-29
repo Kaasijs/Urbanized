@@ -1,6 +1,6 @@
 extends Area2D
 
-@onready var PaintedNode = $"../../../Painted"
+#@onready var PaintedNode = $"../../../Painted"
 
 func _process(delta):
 	$Canvas.offset.y = sin(Time.get_ticks_msec()/200)

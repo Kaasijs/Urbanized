@@ -1,0 +1,133 @@
+[gd_scene load_steps=9 format=3 uid="uid://c7a3msy1y1rwa"]
+
+[ext_resource type="Texture2D" uid="uid://dyboktjm6v4w6" path="res://scene/StartMenu/Checker.png" id="1_i2txb"]
+[ext_resource type="Script" uid="uid://3skwmhjjqmak" path="res://scene/StartMenu/MainMenu.gd" id="2_gei8p"]
+[ext_resource type="FontFile" uid="uid://o51rmvlqk40m" path="res://Fonts/Fibberish v1.0/fibberish.ttf" id="3_8sx71"]
+[ext_resource type="Theme" uid="uid://dhy5vnkljpsvy" path="res://new_theme.tres" id="4_d3uxh"]
+[ext_resource type="PackedScene" uid="uid://beftli6p0bs4u" path="res://scene/transition.tscn" id="5_b1d71"]
+
+[sub_resource type="Shader" id="Shader_mqxa8"]
+code = "shader_type canvas_item;
+
+uniform float scroll_speed : hint_range(0, 2) = 0.08;
+uniform float angle_degrees : hint_range(0, 360) = 45.0;
+uniform float repeat_x : hint_range(1, 20) = 20;
+uniform float repeat_y : hint_range(1, 20) = 12;
+uniform float row_offset : hint_range(0, 1) = 1;
+uniform sampler2D texture_to_scroll;
+
+void fragment() {
+ float angle_rad = radians(angle_degrees);
+
+ vec2 direction = vec2(cos(angle_rad), sin(angle_rad));
+
+ vec2 offset_uv = UV - (TIME * scroll_speed * direction);
+
+ float offset = fract(floor(offset_uv.y * repeat_y) * 0.5) > 0.0 ? (row_offset * 0.324) : 0.0;
+
+ offset_uv.x += offset;
+
+ vec2 scaled_uv = vec2(fract(offset_uv.x * repeat_x),
+              fract(offset_uv.y * repeat_y));
+
+ vec2 texelSize = vec2(1.0) / vec2(textureSize(texture_to_scroll, 0));
+ vec2 snappedUV = round(scaled_uv / texelSize) * texelSize;
+
+ COLOR = texture(texture_to_scroll, snappedUV);
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jdh8r"]
+shader = SubResource("Shader_mqxa8")
+shader_parameter/scroll_speed = 0.02
+shader_parameter/angle_degrees = 45.0
+shader_parameter/repeat_x = 9.0
+shader_parameter/repeat_y = 9.0
+shader_parameter/row_offset = 0.0
+shader_parameter/texture_to_scroll = ExtResource("1_i2txb")
+
+[sub_resource type="LabelSettings" id="LabelSettings_v465r"]
+font = ExtResource("3_8sx71")
+font_size = 128
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.898039)
+shadow_offset = Vector2(8, 8)
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+
+[node name="Checker" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_jdh8r")
+position = Vector2(592, 472)
+rotation = -0.102974
+scale = Vector2(4.35937, 4.35937)
+texture = ExtResource("1_i2txb")
+
+[node name="rGUI" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_gei8p")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="rGUI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -50.0
+offset_right = 250.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="rGUI/VBoxContainer"]
+layout_mode = 2
+text = "Urbaniz"
+label_settings = SubResource("LabelSettings_v465r")
+horizontal_alignment = 1
+
+[node name="HSeparator2" type="HSeparator" parent="rGUI/VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="HSeparator3" type="HSeparator" parent="rGUI/VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Start" type="Button" parent="rGUI/VBoxContainer"]
+custom_minimum_size = Vector2(500, 100)
+layout_mode = 2
+theme = ExtResource("4_d3uxh")
+text = "Start"
+
+[node name="HSeparator" type="HSeparator" parent="rGUI/VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Tutorial" type="Button" parent="rGUI/VBoxContainer"]
+custom_minimum_size = Vector2(500, 100)
+layout_mode = 2
+theme = ExtResource("4_d3uxh")
+text = "How to play"
+
+[node name="Transition" parent="." instance=ExtResource("5_b1d71")]
+
+[connection signal="pressed" from="rGUI/VBoxContainer/Start" to="rGUI" method="_on_start_pressed"]
+[connection signal="pressed" from="rGUI/VBoxContainer/Tutorial" to="rGUI" method="_on_tutorial_pressed"]
+
+[editable path="Transition"]

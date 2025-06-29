@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://co8i8ppnyjymv"]
+[gd_scene load_steps=3 format=3 uid="uid://co8i8ppnyjyms"]
 
 [ext_resource type="SpriteFrames" uid="uid://bhvkfjquk283f" path="res://Player/Debug/Jump/Particels/Jump_Particels.tres" id="1_4vgry"]
 [ext_resource type="Script" uid="uid://cugnh43q1nw48" path="res://Player/Debug/Particels.gd" id="2_supbb"]

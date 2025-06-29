@@ -14,7 +14,7 @@ func _get_painted_walls():
 			if i.global_position.distance_to(PlayerNode.global_position) > 800:
 				ListOfPaintedWalls.append(i)
 	
-	if len(ListOfPaintedWalls) > 1:
+	if len(ListOfPaintedWalls) > 3:
 		var IndexWallOfBestResult:int = 0
 		var WallCompareDistance:float = 0
 		

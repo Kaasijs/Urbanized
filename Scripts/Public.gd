@@ -1,7 +1,16 @@
 extends Node
 
+#Shop
+var ListOfItemsBought:Array = []
+var SelectedItem:String = ""
+
+#Painting
+var PaintSteps:int = 2
+var PaintReward:int = 500
+
 #Score keeping
 var Score:int = 0
+var SavedScore:int = 0
 var score_updater := preload("res://Player/ScoreKeeper/ScoreUpdate.tscn")
 func AddScore(amount,global_position):
 	Score += amount

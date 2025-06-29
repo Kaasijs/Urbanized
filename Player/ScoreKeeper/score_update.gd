@@ -13,12 +13,12 @@ func update(amount):
 		$AnimationPlayer.play("10")
 	
 func _process(delta):
-	var steps := locked_amount/5
+	var steps:float = locked_amount/5
 	
 	
 	animated_value = lerpf(animated_value,locked_amount,delta*5)
 	
-	$Label.text = str(roundi(animated_value/steps)*steps)
+	$Label.text = str(int(roundi(animated_value/steps)*steps))
 
 
 func _on_animation_player_animation_finished(anim_name):

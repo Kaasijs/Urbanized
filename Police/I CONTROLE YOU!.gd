@@ -16,6 +16,9 @@ var GoToTheFanashing:bool = false
 var TargetPreviuesPosition:Vector2
 
 func _physics_process(delta):
+	if freeze:
+		return
+	
 	var PlayerGlobalPositionRounded:Vector2 = round(PlayerNode.global_position/32)*32 - Vector2(16,-16)
 	
 	RaycastNode.global_position = global_position
@@ -61,4 +64,4 @@ func _physics_process(delta):
 
 func _on_area_2d_body_entered(body):
 	if body.has_method("is_player"):
-		pass
+		$CanvasLayer/Death.death()

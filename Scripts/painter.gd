@@ -46,6 +46,8 @@ var GreatTexts:Array =[
 func _start():
 	index = 0
 	
+	amount = Public.PaintSteps
+	
 	for i in amount:
 		_add_action()
 

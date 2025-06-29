@@ -7,7 +7,7 @@ func _ready():
 
 func _painted():
 	$"../Paint".show()
-	Public.AddScore(1000,global_position)
+	Public.AddScore(Public.PaintReward,global_position)
 	
 	get_parent().add_to_group("painted")
 	self.queue_free()

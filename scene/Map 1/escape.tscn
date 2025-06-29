@@ -1,12 +1,35 @@
-[gd_scene load_steps=4 format=3 uid="uid://ci7n8fk24ttfi"]
+[gd_scene load_steps=6 format=3 uid="uid://ci7n8fk24ttfi"]
 
+[ext_resource type="FontFile" uid="uid://o51rmvlqk40m" path="res://Fonts/Fibberish v1.0/fibberish.ttf" id="1_8488q"]
 [ext_resource type="Script" uid="uid://cjlb114ih1kbo" path="res://scene/Map 1/escape.gd" id="3_wksis"]
 [ext_resource type="Texture2D" uid="uid://5x18tf2i62y4" path="res://Player/Painter/Textures/canvas.png" id="4_wksis"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_g6knq"]
+font = ExtResource("1_8488q")
+font_size = 64
+shadow_size = 0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b88cj"]
 size = Vector2(192, 128)
 
 [node name="FullWall" type="Node2D"]
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -143.713
+offset_top = -179.419
+offset_right = 156.287
+offset_bottom = -123.419
+grow_horizontal = 2
+grow_vertical = 2
+text = "SAVE HOUSE"
+label_settings = SubResource("LabelSettings_g6knq")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Wall" type="Area2D" parent="."]
 script = ExtResource("3_wksis")

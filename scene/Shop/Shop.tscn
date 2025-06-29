@@ -1,0 +1,446 @@
+[gd_scene load_steps=17 format=3 uid="uid://c7a3msy1y1rwb"]
+
+[ext_resource type="Shader" uid="uid://q7mxkjml7nal" path="res://Shaders/ScrollingTexture.gdshader" id="1_jdh8r"]
+[ext_resource type="Texture2D" uid="uid://cyjhsj6d8kwya" path="res://scene/Shop/Checker2.png" id="2_ko6jc"]
+[ext_resource type="Texture2D" uid="uid://dyboktjm6v4w6" path="res://scene/StartMenu/Checker.png" id="3_ko6jc"]
+[ext_resource type="Script" uid="uid://60hk4e6jn6k6" path="res://scene/Shop/ShopGUI.gd" id="4_ko6jc"]
+[ext_resource type="FontFile" uid="uid://o51rmvlqk40m" path="res://Fonts/Fibberish v1.0/fibberish.ttf" id="4_mqxa8"]
+[ext_resource type="Theme" uid="uid://dhy5vnkljpsvy" path="res://new_theme.tres" id="4_vrhe7"]
+[ext_resource type="Texture2D" uid="uid://dh1hhxd8io3lj" path="res://scene/Shop/items/Spray1.png" id="6_608ng"]
+[ext_resource type="Script" uid="uid://dnciycp7can0s" path="res://scene/Shop/Item.gd" id="6_b8nt3"]
+[ext_resource type="PackedScene" uid="uid://beftli6p0bs4u" path="res://scene/transition.tscn" id="6_v465r"]
+[ext_resource type="Texture2D" uid="uid://brjnqy1c261x0" path="res://scene/Shop/items/Spray2.png" id="8_pn2k6"]
+[ext_resource type="Texture2D" uid="uid://b2pi4jek2fq5c" path="res://scene/Shop/items/Spray3.png" id="9_l8v2i"]
+[ext_resource type="Texture2D" uid="uid://d4fgx3h67vxi5" path="res://scene/Shop/items/Spray4.png" id="10_pg8gi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pfwlv"]
+shader = ExtResource("1_jdh8r")
+shader_parameter/scroll_speed = 0.02
+shader_parameter/angle_degrees = 45.0
+shader_parameter/repeat_x = 9.0
+shader_parameter/repeat_y = 9.0
+shader_parameter/row_offset = 0.0
+shader_parameter/texture_to_scroll = ExtResource("2_ko6jc")
+
+[sub_resource type="LabelSettings" id="LabelSettings_cop7u"]
+font = ExtResource("4_mqxa8")
+font_size = 160
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.898039)
+shadow_offset = Vector2(8, 8)
+
+[sub_resource type="LabelSettings" id="LabelSettings_b8nt3"]
+line_spacing = 15.0
+font = ExtResource("4_mqxa8")
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_608ng"]
+line_spacing = 15.0
+font = ExtResource("4_mqxa8")
+font_size = 32
+font_color = Color(0, 0, 0, 1)
+
+[node name="Shop" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+
+[node name="CheckerBG" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_pfwlv")
+position = Vector2(592, 472)
+rotation = 3.03862
+scale = Vector2(4.35937, 4.35937)
+texture = ExtResource("3_ko6jc")
+
+[node name="GUI SHOP" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_ko6jc")
+
+[node name="Cooldown3" type="RichTextLabel" parent="GUI SHOP"]
+modulate = Color(1, 1, 1, 0.231373)
+custom_minimum_size = Vector2(800, 120)
+layout_mode = 2
+offset_left = -229.0
+offset_top = 116.0
+offset_right = 1124.0
+offset_bottom = 360.0
+rotation = -0.118682
+theme = ExtResource("4_vrhe7")
+theme_override_font_sizes/normal_font_size = 192
+bbcode_enabled = true
+text = "[wave amp=90.0 freq=1.0 connected=1]PAINT SHOP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score" type="Label" parent="GUI SHOP"]
+custom_minimum_size = Vector2(2000, 0)
+layout_mode = 0
+offset_left = 193.0
+offset_top = 19.0
+offset_right = 2193.0
+offset_bottom = 131.0
+scale = Vector2(0.395, 0.395)
+text = "General score"
+label_settings = SubResource("LabelSettings_cop7u")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="City" type="Button" parent="GUI SHOP"]
+custom_minimum_size = Vector2(500, 100)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -64.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("4_vrhe7")
+text = "Paint the city"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GUI SHOP"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -145.0
+offset_bottom = 209.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Item 1" type="Panel" parent="GUI SHOP/HBoxContainer" node_paths=PackedStringArray("BuyNode")]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+script = ExtResource("6_b8nt3")
+BuyNode = NodePath("VBoxContainer/Buy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI SHOP/HBoxContainer/Item 1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Placeholder" type="Label" parent="GUI SHOP/HBoxContainer/Item 1/VBoxContainer"]
+layout_mode = 2
+text = "cost:"
+label_settings = SubResource("LabelSettings_b8nt3")
+vertical_alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="GUI SHOP/HBoxContainer/Item 1/VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("6_608ng")
+expand_mode = 4
+stretch_mode = 4
+
+[node name="Buy" type="Button" parent="GUI SHOP/HBoxContainer/Item 1/VBoxContainer"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("4_vrhe7")
+text = "Buy"
+
+[node name="Placeholder" type="Label" parent="GUI SHOP/HBoxContainer/Item 1"]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 183.0
+offset_right = 161.0
+offset_bottom = 297.0
+text = "Moves:
+paint:
+"
+label_settings = SubResource("LabelSettings_608ng")
+
+[node name="Cost" type="Label" parent="GUI SHOP/HBoxContainer/Item 1"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 71.0
+offset_top = -177.0
+offset_bottom = -149.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "2000"
+label_settings = SubResource("LabelSettings_b8nt3")
+vertical_alignment = 2
+
+[node name="Moves" type="Label" parent="GUI SHOP/HBoxContainer/Item 1"]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 206.0
+offset_right = 153.0
+offset_bottom = 290.0
+text = "3"
+label_settings = SubResource("LabelSettings_608ng")
+
+[node name="Reward" type="Label" parent="GUI SHOP/HBoxContainer/Item 1"]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 256.0
+offset_right = 153.0
+offset_bottom = 290.0
+text = "750"
+label_settings = SubResource("LabelSettings_608ng")
+
+[node name="Item 2" type="Panel" parent="GUI SHOP/HBoxContainer" node_paths=PackedStringArray("BuyNode")]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+script = ExtResource("6_b8nt3")
+BuyNode = NodePath("VBoxContainer/Buy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI SHOP/HBoxContainer/Item 2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Placeholder" type="Label" parent="GUI SHOP/HBoxContainer/Item 2/VBoxContainer"]
+layout_mode = 2
+text = "cost:"
+label_settings = SubResource("LabelSettings_b8nt3")
+vertical_alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="GUI SHOP/HBoxContainer/Item 2/VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("8_pn2k6")
+expand_mode = 4
+stretch_mode = 4
+
+[node name="Buy" type="Button" parent="GUI SHOP/HBoxContainer/Item 2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("4_vrhe7")
+text = "Buy"
+
+[node name="Placeholder" type="Label" parent="GUI SHOP/HBoxContainer/Item 2"]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 183.0
+offset_right = 161.0
+offset_bottom = 297.0
+text = "Moves:
+paint:
+"
+label_settings = SubResource("LabelSettings_608ng")
+
+[node name="Cost" type="Label" parent="GUI SHOP/HBoxContainer/Item 2"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 71.0
+offset_top = -177.0
+offset_bottom = -149.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "5000"
+label_settings = SubResource("LabelSettings_b8nt3")
+vertical_alignment = 2
+
+[node name="Moves" type="Label" parent="GUI SHOP/HBoxContainer/Item 2"]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 206.0
+offset_right = 153.0
+offset_bottom = 290.0
+text = "4"
+label_settings = SubResource("LabelSettings_608ng")
+
+[node name="Reward" type="Label" parent="GUI SHOP/HBoxContainer/Item 2"]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 256.0
+offset_right = 153.0
+offset_bottom = 290.0
+text = "1000"
+label_settings = SubResource("LabelSettings_608ng")
+
+[node name="Item 3" type="Panel" parent="GUI SHOP/HBoxContainer" node_paths=PackedStringArray("BuyNode")]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+script = ExtResource("6_b8nt3")
+BuyNode = NodePath("VBoxContainer/Buy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI SHOP/HBoxContainer/Item 3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Placeholder" type="Label" parent="GUI SHOP/HBoxContainer/Item 3/VBoxContainer"]
+layout_mode = 2
+text = "cost:"
+label_settings = SubResource("LabelSettings_b8nt3")
+vertical_alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="GUI SHOP/HBoxContainer/Item 3/VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("9_l8v2i")
+expand_mode = 4
+stretch_mode = 4
+
+[node name="Buy" type="Button" parent="GUI SHOP/HBoxContainer/Item 3/VBoxContainer"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("4_vrhe7")
+text = "Buy"
+
+[node name="Placeholder" type="Label" parent="GUI SHOP/HBoxContainer/Item 3"]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 183.0
+offset_right = 161.0
+offset_bottom = 297.0
+text = "Moves:
+paint:
+"
+label_settings = SubResource("LabelSettings_608ng")
+
+[node name="Cost" type="Label" parent="GUI SHOP/HBoxContainer/Item 3"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 71.0
+offset_top = -177.0
+offset_bottom = -149.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "7000"
+label_settings = SubResource("LabelSettings_b8nt3")
+vertical_alignment = 2
+
+[node name="Moves" type="Label" parent="GUI SHOP/HBoxContainer/Item 3"]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 206.0
+offset_right = 153.0
+offset_bottom = 290.0
+text = "3"
+label_settings = SubResource("LabelSettings_608ng")
+
+[node name="Reward" type="Label" parent="GUI SHOP/HBoxContainer/Item 3"]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 256.0
+offset_right = 153.0
+offset_bottom = 290.0
+text = "1500"
+label_settings = SubResource("LabelSettings_608ng")
+
+[node name="Item 4" type="Panel" parent="GUI SHOP/HBoxContainer" node_paths=PackedStringArray("BuyNode")]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+script = ExtResource("6_b8nt3")
+BuyNode = NodePath("VBoxContainer/Buy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI SHOP/HBoxContainer/Item 4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Placeholder" type="Label" parent="GUI SHOP/HBoxContainer/Item 4/VBoxContainer"]
+layout_mode = 2
+text = "cost:"
+label_settings = SubResource("LabelSettings_b8nt3")
+vertical_alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="GUI SHOP/HBoxContainer/Item 4/VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("10_pg8gi")
+expand_mode = 4
+stretch_mode = 4
+
+[node name="Buy" type="Button" parent="GUI SHOP/HBoxContainer/Item 4/VBoxContainer"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("4_vrhe7")
+text = "Buy"
+
+[node name="Placeholder" type="Label" parent="GUI SHOP/HBoxContainer/Item 4"]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 183.0
+offset_right = 161.0
+offset_bottom = 297.0
+text = "Moves:
+paint:
+"
+label_settings = SubResource("LabelSettings_608ng")
+
+[node name="Cost" type="Label" parent="GUI SHOP/HBoxContainer/Item 4"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 71.0
+offset_top = -177.0
+offset_bottom = -149.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "24690"
+label_settings = SubResource("LabelSettings_b8nt3")
+vertical_alignment = 2
+
+[node name="Moves" type="Label" parent="GUI SHOP/HBoxContainer/Item 4"]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 206.0
+offset_right = 153.0
+offset_bottom = 290.0
+text = "6"
+label_settings = SubResource("LabelSettings_608ng")
+
+[node name="Reward" type="Label" parent="GUI SHOP/HBoxContainer/Item 4"]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 256.0
+offset_right = 153.0
+offset_bottom = 290.0
+text = "3000"
+label_settings = SubResource("LabelSettings_608ng")
+
+[node name="Transition" parent="." instance=ExtResource("6_v465r")]
+
+[connection signal="pressed" from="GUI SHOP/City" to="GUI SHOP" method="_on_tutorial_pressed"]
+[connection signal="pressed" from="GUI SHOP/HBoxContainer/Item 1/VBoxContainer/Buy" to="GUI SHOP/HBoxContainer/Item 1" method="_on_buy_pressed"]
+[connection signal="pressed" from="GUI SHOP/HBoxContainer/Item 2/VBoxContainer/Buy" to="GUI SHOP/HBoxContainer/Item 2" method="_on_buy_pressed"]
+[connection signal="pressed" from="GUI SHOP/HBoxContainer/Item 3/VBoxContainer/Buy" to="GUI SHOP/HBoxContainer/Item 3" method="_on_buy_pressed"]
+[connection signal="pressed" from="GUI SHOP/HBoxContainer/Item 4/VBoxContainer/Buy" to="GUI SHOP/HBoxContainer/Item 4" method="_on_buy_pressed"]
+
+[editable path="Transition"]

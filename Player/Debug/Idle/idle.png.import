@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://4mgf5pwpf8bb"
-path="res://.godot/imported/idle-Sheet.png-e6ccfc77b5521f24d0128ff0c475c4ee.ctex"
+uid="uid://06boub6rlbod"
+path="res://.godot/imported/idle.png-9e30b53a5915c6c1ef7beae631b18502.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Player/Debug/Idle/idle-Sheet.png"
-dest_files=["res://.godot/imported/idle-Sheet.png-e6ccfc77b5521f24d0128ff0c475c4ee.ctex"]
+source_file="res://Player/Debug/Idle/idle.png"
+dest_files=["res://.godot/imported/idle.png-9e30b53a5915c6c1ef7beae631b18502.ctex"]
 
 [params]
 
@@ -31,4 +31,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

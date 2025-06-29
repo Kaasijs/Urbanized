@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://f5hmr3cdnnfw"
-path="res://.godot/imported/Checker - white.png-6445b24434ff06d05486a3214a25f83e.ctex"
+uid="uid://cyjhsj6d8kwya"
+path="res://.godot/imported/Checker2.png-b2bc9bc737f8e2d982610cd9faef9af0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scene/MainMenu/Checker - white.png"
-dest_files=["res://.godot/imported/Checker - white.png-6445b24434ff06d05486a3214a25f83e.ctex"]
+source_file="res://scene/Shop/Checker2.png"
+dest_files=["res://.godot/imported/Checker2.png-b2bc9bc737f8e2d982610cd9faef9af0.ctex"]
 
 [params]
 
@@ -31,4 +31,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0
