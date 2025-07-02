@@ -13,7 +13,7 @@ func death():
 	
 	get_parent().show()
 	
-	text = " BUSTED! \n-" + str(Public.Score) + " style point"
+	text = " BUSTED! \nlost " + str(Public.Score) + " style point"
 	Public.Score = 0
 	
 	$"../AnimationPlayer".play("wawu")

@@ -7,11 +7,11 @@
 [ext_resource type="PackedScene" uid="uid://c5vvkw1dyj46o" path="res://Player/Painter/full_wall.tscn" id="4_si360"]
 [ext_resource type="Theme" uid="uid://dhy5vnkljpsvy" path="res://new_theme.tres" id="4_tjwh4"]
 [ext_resource type="Script" uid="uid://w07x6bs1c6mo" path="res://Scripts/ReDoPaintables.gd" id="4_udlbu"]
-[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="5_q5yuh"]
 [ext_resource type="PackedScene" uid="uid://bfuthgyh3gc3l" path="res://Player/player_1.tscn" id="7_uoxal"]
 [ext_resource type="Script" uid="uid://b5c22ttqfvk2n" path="res://Police/I CONTROLE YOU!.gd" id="9_88nsi"]
 [ext_resource type="Texture2D" uid="uid://cbyr47q2b8lf8" path="res://Police/Flying/Flying1.png" id="10_6d3h8"]
 [ext_resource type="Texture2D" uid="uid://djbppdhqfvkyq" path="res://Police/Flying/Flying2.png" id="11_6sdb2"]
+[ext_resource type="Script" uid="uid://b432a4l4px878" path="res://scene/Map 1/Tempfix.gd" id="13_si360"]
 [ext_resource type="PackedScene" uid="uid://beftli6p0bs4u" path="res://scene/transition.tscn" id="13_tjwh4"]
 
 [sub_resource type="Resource" id="Resource_7if2x"]
@@ -87,6 +87,7 @@ auto_zoom_min = 0.1
 auto_zoom_max = 2.0
 auto_zoom_margin = Vector4(180, 180, 180, 180)
 auto_zoom_speed = 4.0
+draw_limits = true
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 scale = Vector2(2, 2)
@@ -182,17 +183,6 @@ position = Vector2(2108, 384)
 [node name="Wall" parent="Paintable/FullWall" index="1"]
 script = SubResource("GDScript_tjwh4")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-physics_interpolation_mode = 1
-position = Vector2(468, 472)
-zoom = Vector2(1.8, 1.8)
-process_callback = 0
-
-[node name="PhantomCameraHost" type="Node" parent="Camera2D"]
-process_priority = 300
-process_physics_priority = 300
-script = ExtResource("5_q5yuh")
-
 [node name="Player 1" parent="." node_paths=PackedStringArray("TileMapNode") instance=ExtResource("7_uoxal")]
 position = Vector2(468, 512)
 TileMapNode = NodePath("../TileMapLayer")
@@ -227,6 +217,10 @@ disabled = true
 shape = SubResource("RectangleShape2D_wp315")
 
 [node name="Transition" parent="." instance=ExtResource("13_tjwh4")]
+
+[node name="Camera2D2" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+script = ExtResource("13_si360")
 
 [connection signal="body_entered" from="PoliceDrone/Area2D" to="PoliceDrone" method="_on_area_2d_body_entered"]
 

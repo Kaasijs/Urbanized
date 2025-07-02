@@ -5,7 +5,6 @@
 [ext_resource type="TileSet" uid="uid://dysq6c8cg1y8j" path="res://scene/Map 1/TileSetMap.tres" id="3_sa87f"]
 [ext_resource type="Script" uid="uid://w07x6bs1c6mo" path="res://Scripts/ReDoPaintables.gd" id="4_lonsd"]
 [ext_resource type="PackedScene" uid="uid://c5vvkw1dyj46o" path="res://Player/Painter/full_wall.tscn" id="4_txdsw"]
-[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="5_k0o7e"]
 [ext_resource type="PackedScene" uid="uid://bfuthgyh3gc3l" path="res://Player/player_1.tscn" id="7_sa87f"]
 [ext_resource type="PackedScene" uid="uid://ci7n8fk24ttfi" path="res://scene/Map 1/escape.tscn" id="7_yevxx"]
 [ext_resource type="FontFile" uid="uid://o51rmvlqk40m" path="res://Fonts/Fibberish v1.0/fibberish.ttf" id="8_76eyc"]
@@ -19,6 +18,7 @@
 [ext_resource type="Shader" uid="uid://4fon4d8xkxa2" path="res://Police/outline.gdshader" id="14_hei83"]
 [ext_resource type="AudioStream" uid="uid://djuaq13sg10x0" path="res://Sound/Impact1.wav" id="17_02tnl"]
 [ext_resource type="Script" uid="uid://bfqtx268wigpu" path="res://scene/Map 1/DeathMessage.tres.gd" id="17_acux7"]
+[ext_resource type="Script" uid="uid://b432a4l4px878" path="res://scene/Map 1/Tempfix.gd" id="20_eqeg7"]
 
 [sub_resource type="Gradient" id="Gradient_uv6ms"]
 offsets = PackedFloat32Array(0, 0.748858)
@@ -55,6 +55,57 @@ font_size = 96
 shadow_size = 0
 shadow_color = Color(0, 0, 0, 0.898039)
 shadow_offset = Vector2(6, 6)
+
+[sub_resource type="Animation" id="Animation_02tnl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Death:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Death:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ColorRect:color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 0.254902)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Death:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_hei83"]
 resource_name = "wawu"
@@ -124,57 +175,6 @@ tracks/4/keys = {
 "values": [Vector2(0, 0), Vector2(-8, -8), Vector2(-8, 8), Vector2(8, -8), Vector2(-8, -8), Vector2(8, 0), Vector2(0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_02tnl"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Death:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Death:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("ColorRect:color")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 0, 0, 0.254902)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Death:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_02tnl"]
 _data = {
 &"RESET": SubResource("Animation_02tnl"),
@@ -227,6 +227,7 @@ metadata/_edit_use_anchors_ = true
 [node name="Transition" parent="." instance=ExtResource("13_yevxx")]
 
 [node name="PhantomCamera2D" type="Node2D" parent="." node_paths=PackedStringArray("follow_targets")]
+visible = false
 top_level = true
 position = Vector2(-24, -12)
 script = ExtResource("1_sa87f")
@@ -243,6 +244,7 @@ auto_zoom_min = 0.1
 auto_zoom_max = 2.0
 auto_zoom_margin = Vector4(180, 180, 180, 180)
 auto_zoom_speed = 4.0
+draw_limits = true
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 y_sort_enabled = true
@@ -292,17 +294,6 @@ scale = Vector2(2, 2)
 tile_map_data = PackedByteArray("AADY/+//AAALAAAAAADU/+3/AAALAAIAAADY/+v/AAALAAEAAADU/+n/AAALAAEAAADi//D/AAAJAAYAAADk//D/AAAJAAYAABDj//D/AAAJAAcAAADq//D/AAAJAAcAAADp//D/AAAJAAYAAADr//D/AAAJAAYAABDZ//n/AAAJAAMAAADd/+//AAAKAAAAAADR/+X/AAAKAAAAAADs//D/AAAJAAAAAADs/+v/AAAJAAAAAAD2//D/AAAJAAMAAAD2/+3/AAABAAEAADD3/+z/AAABAAEAADD4/+v/AAABAAEAADD5/+r/AAABAAEAADD6/+n/AAABAAEAADD7/+j/AAABAAEAADD8/wIAAAAJAAAAAAAKAAIAAAAJAAAAABDi//n/AAAJAAYAAADj//n/AAAJAAcAAADk//n/AAAJAAYAABDm//n/AAAJAAYAAADo//n/AAAJAAYAABDn//n/AAAJAAcAAAAsAPX/AAALAAAAAAAIAO//AAALAAAAAAAcAOH/AAACAAEAAFAdAOD/AAACAAEAAFAeAN//AAACAAEAAFAfAN7/AAACAAEAAFAbAOL/AAACAAEAAFAdAOX/AAALAAAAAADj/+j/AAALAAEAAADn/+j/AAALAAIAAADn/+T/AAALAAEAAADj/+T/AAALAAIAAADh/+P/AAACAAEAAFDi/+L/AAACAAEAAFDj/+H/AAAEAAEAAADk/+H/AAAEAAEAAADl/+H/AAAEAAEAAADm/+H/AAAEAAEAAADn/+H/AAAEAAEAAADo/+H/AAAEAAEAAADp/+H/AAAEAAEAAADk/+D/AAAEAAEAAADl/+D/AAAEAAEAAADm/+D/AAAEAAEAAADn/+D/AAAEAAEAAADo/+D/AAAEAAEAAADp/+D/AAAEAAEAAAAIAOz/AAAKAAkAAADS/+f/AAAAAAEAAADR/+D/AAAAAAEAAADd//H/AAAAAAEAAAD8//H/AAAAAAEAAAAFAPH/AAAAAAEAAAA2APv/AAAAAAEAAAAvAPv/AAAAAAEAAAAxAPf/AAAAAAEAAAA0APf/AAAAAAEAAAA2AO3/AAAAAAEAAAA1AO3/AAAAAAEAAAA0AO3/AAAAAAEAAAAzAO3/AAAAAAEAAAAeAOf/AAAAAAEAAAAfAOf/AAAAAAEAAAAgAOf/AAAAAAEAAAA4AOj/AAACAAEAAAA5AOn/AAACAAEAAAA6AOr/AAACAAEAAAA7AOv/AAACAAEAAAA8AOz/AAACAAEAAAAlAAIAAAAJAAAAAADs//n/AAAJAAAAAAA6AAIAAAAJAAMAAAAoAPL/AAALAAIAAAAdAOL/AAALAAIAAAA9AOz/AAAJAAYAAAA/AOz/AAAJAAYAABA+AOz/AAAJAAcAAAA=")
 tile_set = ExtResource("3_sa87f")
 occlusion_enabled = false
-
-[node name="Camera2D" type="Camera2D" parent="."]
-physics_interpolation_mode = 1
-position = Vector2(-24, -12)
-zoom = Vector2(1.55769, 1.55769)
-process_callback = 0
-
-[node name="PhantomCameraHost" type="Node" parent="Camera2D"]
-process_priority = 300
-process_physics_priority = 300
-script = ExtResource("5_k0o7e")
 
 [node name="FullWall" parent="." instance=ExtResource("7_yevxx")]
 position = Vector2(112, 64)
@@ -447,6 +438,10 @@ disabled = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PoliceManager/PoliceDrone2/Area2D"]
 shape = SubResource("RectangleShape2D_wp315")
+
+[node name="Camera2D2" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+script = ExtResource("20_eqeg7")
 
 [connection signal="body_entered" from="PoliceManager/PoliceDrone/Area2D" to="PoliceManager/PoliceDrone" method="_on_area_2d_body_entered"]
 [connection signal="body_entered" from="PoliceManager/PoliceDrone2/Area2D" to="PoliceManager/PoliceDrone2" method="_on_area_2d_body_entered"]
